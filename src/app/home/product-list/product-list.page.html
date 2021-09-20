@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Product List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <h3 class="ion-text-center ion-margin-top">
+      Filter by type
+    </h3>
+  </div>
+  <ion-select (ionChange)="_cart.filterProductsType($event)" value="all" okText="Okay" class="ion-margin"
+    cancelText="Dismiss" style="--padding-start: 9px">
+    <ion-select-option value="all" selected>All</ion-select-option>
+    <ion-select-option value="fast-food-outline" selected>Food</ion-select-option>
+    <ion-select-option value="construct-outline">Service</ion-select-option>
+    <ion-select-option value="briefcase-outline">Furni</ion-select-option>
+    <ion-select-option value="game-controller-outline">Game</ion-select-option>
+    <ion-select-option value="beer-outline">Drink</ion-select-option>
+    <ion-select-option value="footsteps-outline">Shoes</ion-select-option>
+    <ion-select-option value="man-outline">Clothing</ion-select-option>
+    <ion-select-option value="desktop-outline">Artifact</ion-select-option>
+    <ion-select-option value="cog-outline">Other</ion-select-option>
+  </ion-select>
+
+
+  <ion-list *ngIf="_cart.products && _cart.filterProducts.length > 0; else noProducts">
+    <ion-item *ngFor="let product of _cart.filterProducts">
+      <ion-avatar slot="start">
+        <ion-icon name={{product.type}}></ion-icon>
+      </ion-avatar>
+      <ion-label>
+        {{product.description}} ${{product.price}} <div slot="end">#{{product.code}}</div>
+      </ion-label>
+      <ion-button slot="end" color="danger" (click)="_cart.deletedProductCart(product.id)">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+  <ng-template #noProducts>
+    <ion-text>
+      <p class="ion-text-center ion-margin-top">No adding products yet.</p>
+    </ion-text>
+  </ng-template>
+</ion-content>

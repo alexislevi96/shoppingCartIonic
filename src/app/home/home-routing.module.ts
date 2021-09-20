@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: '',
     component: HomePage,
+  },
+  {
+    path: 'product-list',
+    loadChildren: () => import('./product-list/product-list.module').then( m => m.ProductListPageModule)
   }
 ];
 

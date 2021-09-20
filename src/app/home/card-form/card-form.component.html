@@ -1,0 +1,21 @@
+<ion-card>
+  <ion-card-content>
+    <ion-input type="text" placeholder="Write a Code" [(ngModel)]="_cart.code"></ion-input>
+    <ion-input type="text" placeholder="Write a Description" [(ngModel)]="_cart.description"></ion-input>
+    <ion-input type="number" inputmode="numeric" placeholder="Price" [(ngModel)]="_cart.price"></ion-input>
+    <ion-input type="number" inputmode="numeric" placeholder="Quantity" [(ngModel)]="_cart.quantity"></ion-input>
+    <ion-select value="fast-food-outline" okText="Okay" cancelText="Dismiss" [(ngModel)]="_cart.type"
+      style="--padding-start: 9px">
+      <ion-select-option value="fast-food-outline" selected>Food</ion-select-option>
+      <ion-select-option value="construct-outline">Service</ion-select-option>
+      <ion-select-option value="briefcase-outline">Furni</ion-select-option>
+      <ion-select-option value="game-controller-outline">Game</ion-select-option>
+      <ion-select-option value="beer-outline">Drink</ion-select-option>
+      <ion-select-option value="footsteps-outline">Shoes</ion-select-option>
+      <ion-select-option value="man-outline">Clothing</ion-select-option>
+      <ion-select-option value="desktop-outline">Artifact</ion-select-option>
+      <ion-select-option value="cog-outline">Other</ion-select-option>
+    </ion-select>
+    <ion-button color="primary" (click)="_cart.addProductCart()">Save</ion-button>
+  </ion-card-content>
+</ion-card>
