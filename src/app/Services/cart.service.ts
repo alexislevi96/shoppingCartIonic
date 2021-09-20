@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Product } from '../product.model'; 
 import {  ModalController, ToastController } from '@ionic/angular';
 import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
+import { element } from 'protractor';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,10 @@ export class CartService {
   type = "fast-food-outline";
   totalId=2;
   total = 0;
-  codeDiscount=""
+  totalDiscount=-1;
+  codeDiscount="";
+  codePorcent="00";
+  codeApply="";
   products: Product[] = [
     {
       id: 1,
@@ -39,7 +44,8 @@ export class CartService {
   filterProducts: Product[] = this.products;
 
   constructor(public toast: ToastController,
-              public modal: ModalController) { 
+              public modal: ModalController,
+              public router: Router) { 
     this.total += 10800;
   }
   filterProductsType($type){
@@ -129,7 +135,40 @@ export class CartService {
     this.filterProducts = this.products;
   }
 
-  addCode(){
+  verifyCode(code){
+    var elementPorcent = document.querySelector('.porcent');
+    if(code=="diproach"){
+      console.log(elementPorcent);
+      elementPorcent.removeAttribute('class');
+      elementPorcent.classList.add("porcent-50","porcent");
+      this.codePorcent = "50";
+    }else if(code=="20off"){
+      console.log(elementPorcent);
+      elementPorcent.removeAttribute('class');
+      elementPorcent.classList.add("porcent-20", "porcent");
+      this.codePorcent = "20";
+    }else{
+      elementPorcent.removeAttribute('class');
+      elementPorcent.classList.add("porcent");
+      this.codePorcent = "00";
+    }
+  }
 
+  addCode(code){
+    if(this.codeDiscount.length > 0){
+      console.log(this.codeDiscount.length );
+      this.presentToast('Not Code','danger');
+    }else{
+      console.log(code.value, code.value.length);
+      if(code.value=="diproach" || code.value=="20off"){
+        this.totalDiscount = this.total - parseInt(this.codePorcent) * this.total / 100;
+        this.codeApply = this.codePorcent;
+        this.codePorcent = "00";
+        this.router.navigate(['/home']);
+        this.presentToast(`Your code was applied! Total: $${this.totalDiscount}`,'success');
+      }else{
+        this.presentToast('No Code Validate','danger');
+      }
+    }
   }
 }

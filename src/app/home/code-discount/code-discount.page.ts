@@ -12,5 +12,7 @@ export class CodeDiscountPage implements OnInit {
 
   ngOnInit() {
   }
-
+  onChange($event){
+    this._cart.verifyCode($event.target.value);
+  }
 }

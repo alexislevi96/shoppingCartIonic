@@ -17,8 +17,14 @@
                 ${{_cart.getTotal()}}
               </span>
             </h4>
+            <div *ngIf="_cart.codeApply.length != 0" class="m-3">
+              Total with discount: ${{_cart.totalDiscount}}
+            </div>
           </ion-col>
           <ion-col size="4">
+            <div *ngIf="_cart.codeApply.length != 0" class="codeApply mt-3">
+              Code Apply: %{{_cart.codeApply}}
+            </div>
             <ion-button class="mt-2" color="primary" [routerLink]="['/code-discount']">Add Code</ion-button>
           </ion-col>
         </ion-row>

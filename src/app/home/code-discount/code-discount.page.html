@@ -9,7 +9,18 @@
 
 <ion-content>
   <div class="container">
-    <ion-input type="text" maxlength="6" placeholder="Write a Code AlphaNumeric"></ion-input>
-    <ion-button color="primary" (click)="_cart.addCode()" [(ngModel)]="_cart.codeDiscount">Apply</ion-button>
+    <ion-row>
+      <ion-col size="10">
+        <ion-input type="text" maxlength="8" #code placeholder="Write a Code AlphaNumeric"
+          (ionChange)="onChange($event)">
+        </ion-input>
+      </ion-col>
+      <ion-col size="2" class="mt-2">
+        <div class="porcent">
+          %{{_cart.codePorcent}}
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-button color="primary" (click)="_cart.addCode(code)">Apply</ion-button>
   </div>
 </ion-content>
