@@ -10,6 +10,14 @@ const routes: Routes = [
   {
     path: 'product-list',
     loadChildren: () => import('./product-list/product-list.module').then( m => m.ProductListPageModule)
+  },
+  {
+    path: 'edit',
+    loadChildren: () => import('./edit/edit.module').then( m => m.EditPageModule)
+  },
+  {
+    path: 'code-discount',
+    loadChildren: () => import('./code-discount/code-discount.module').then( m => m.CodeDiscountPageModule)
   }
 ];
 

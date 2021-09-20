@@ -5,7 +5,8 @@
         <ion-icon name={{product.type}}></ion-icon>
       </ion-avatar>
       <ion-label>
-        {{product.description}} ${{product.price}} <div slot="end">#{{product.code}}</div>
+        {{product.description}} ${{product.price}} Quantity: {{product.quantity}} <div slot="end">#{{product.code}}
+        </div>
       </ion-label>
       <ion-button slot="end" color="danger" (click)="_cart.deletedProductCart(product.id)">
         <ion-icon name="trash"></ion-icon>

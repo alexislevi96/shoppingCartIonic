@@ -11,6 +11,10 @@ const routes: Routes = [
     loadChildren: () => import('./home/product-list/product-list-routing.module').then( m => m.ProductListPageRoutingModule)
   },
   {
+    path: 'code-discount',
+    loadChildren: () => import('./home/code-discount/code-discount-routing.module').then( m => m.CodeDiscountPageRoutingModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

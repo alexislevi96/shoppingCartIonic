@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-icon name="close-circle-outline" (click)="closeModal()"></ion-icon>
+    </ion-buttons>
+    <ion-title>Edit Quantity Product</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container mt-3">
+    <p>{{description}} ${{price}}</p>
+    <ion-input type="number" inputmode="numeric" placeholder="Edit quantity" [(ngModel)]="_cart.quantity"></ion-input>
+    <ion-button color="primary" (click)="_cart.editQuantityProduct(id,_cart.quantity)">Save</ion-button>
+  </div>
+</ion-content>

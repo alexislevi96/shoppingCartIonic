@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Add Your Code Discount</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <ion-input type="text" maxlength="6" placeholder="Write a Code AlphaNumeric"></ion-input>
+    <ion-button color="primary" (click)="_cart.addCode()" [(ngModel)]="_cart.codeDiscount">Apply</ion-button>
+  </div>
+</ion-content>
