@@ -15,9 +15,21 @@ const routes: Routes = [
     loadChildren: () => import('./home/code-discount/code-discount-routing.module').then( m => m.CodeDiscountPageRoutingModule)
   },
   {
+    path: 'order',
+    loadChildren: () => import('./order/order-routing.module').then( m => m.OrderPageRoutingModule)
+  },
+  {
+    path: 'order-list',
+    loadChildren: () => import('./order/order-list/order-list.module').then( m => m.OrderListPageModule)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
+  },
+  {
+    path: 'order',
+    loadChildren: () => import('./order/order.module').then( m => m.OrderPageModule)
   },
 ];
 

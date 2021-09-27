@@ -4,7 +4,9 @@ import {  ModalController, ToastController } from '@ionic/angular';
 import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
 import { element } from 'protractor';
 import { Router } from '@angular/router';
-
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -22,39 +24,60 @@ export class CartService {
   codeDiscount="";
   codePorcent="00";
   codeApply="";
-  products: Product[] = [
-    {
-      id: 1,
-      code: "3S42JN43",
-      description: "Hamburguesa",
-      price: 400,
-      quantity: 1,
-      type: "fast-food-outline"
-    },
-    {
-      id: 2,
-      code: "56D42N67",
-      description: "Ropero",
-      price: 10400,
-      quantity: 1,
-      type: "briefcase-outline"
-    },
-  ];
+  products: any = [];
+  // products: Product[] = [
+  //   {
+  //     _id: 1,
+  //     code: "3S42JN43",
+  //     description: "Hamburguesa",
+  //     price: 400,
+  //     quantity: 5,
+  //     type: "fast-food-outline"
+  //   },
+  //   {
+  //     _id: 2,
+  //     code: "56D42N67",
+  //     description: "Ropero",
+  //     price: 10400,
+  //     quantity: 1,
+  //     type: "briefcase-outline"
+  //   },
+  //   {
+  //     _id: 3,
+  //     code: "66F2N67",
+  //     description: "Chicle",
+  //     price: 3,
+  //     quantity: 30,
+  //     type: "fast-food-outline"
+  //   },
+  // ];
 
-  filterProducts: Product[] = this.products;
-
+  // filterProducts: Product[] = this.products;
+  filterProducts: any = [];
+  subscription: any;
   constructor(public toast: ToastController,
               public modal: ModalController,
-              public router: Router) { 
-    this.total += 10800;
+              public router: Router,
+              public http: HttpClient) { 
+    this.total += 0;
+    this.getProductsList();
+    this.filterProducts = this.products;
+    this.subscription = this.refresh.subscribe(()=>{
+      this.getProductsList();
+    });
   }
   filterProductsType($type){
     console.log($type.target.value);
     if($type.target.value == "all"){
       this.filterProducts = this.products;
     }else{
-      this.filterProducts = this.products.filter(product => {
-        return product.type == ($type.target.value+"");
+      // this.filterProducts = this.products.filter(product => {
+      //   return product.type == ($type.target.value+"");
+      // })
+      this.getProductsType($type.target.value).subscribe(data => {
+        this.filterProducts = data;
+      }, error =>{
+        console.log(error.message);
       })
     }
   }
@@ -69,11 +92,21 @@ export class CartService {
   }
   
   getTotal(){
-    this.total = 0;
-    this.products.forEach(product => {
-      this.total += product.price * product.quantity;
-    });
+    // this.total = 0;
+    // this.products.forEach(product => {
+    //   this.total += product.price * product.quantity;
+    // });
+    // return this.total;
     return this.total;
+  }
+  getProduct(id){
+    // const product = this.products.filter(p => {
+    //   return p._id == id;
+    // })
+    // if(product.length > 0){
+    //   return product[0];
+    // }
+    return 0;
   }
 
   clearForm(){
@@ -95,27 +128,43 @@ export class CartService {
     }else{
       this.totalId += 1;
       const product = {
-        id: this.totalId,
+        // _id: this.totalId,
         code: this.code,
         description :this.description,
-        price: parseInt(this.price) * parseInt(this.quantity),
+        price: parseInt(this.price),
         quantity: this.quantity,
         type: this.type
       }
-      this.products.push(product);
-      this.total += product.price;
-      console.log(this.products);
+      // this.products.push(product);
+      // this.total += product.price;
+      this.createProduct(product).subscribe( data => {
+        console.log(data);
+      }, error => {
+        this.presentToast(error.message,'danger');
+      })
       this.clearForm();
       this.presentToast('Your pruduct item have been saved!','success');
     }
   }
-  editQuantityProduct(id, quantity){
+  editQuantityProduct(_id, quantity){
     if(quantity > 0){
-      this.products.forEach( p => {
-        if(p.id == id){
-          p.quantity = quantity;
-        }
+      var product;
+      this.getProductId(_id).subscribe(data =>{
+        product = data;
+        product.quantity = quantity;
+      }, error =>{
+        console.log(error.message);
       });
+      this.updateProduct(_id, product).subscribe(data =>{
+        console.log(data);
+      }, error =>{
+        console.log(error);
+      });
+      // this.products.forEach( p => {
+      //   if(p.id == id){
+      //     p.quantity = quantity;
+      //   }
+      // });
       this.quantity = "";
       this.closeModal();
       this.presentToast('Your pruduct item have been actualize!','success');
@@ -127,12 +176,18 @@ export class CartService {
     this.modal.dismiss();
   }
 
-  deletedProductCart(id){
-    this.presentToast('Your pruduct item have been deleted!','danger');
-    this.products = this.products.filter(product => {
-      return product.id != id;
+  deletedProductCart(_id){
+    
+    this.deletedProduct(_id).subscribe(data =>{
+      console.log(data);
+      this.presentToast('Your pruduct item have been deleted!','danger');
+    }, error =>{
+      console.log(error.message);
     })
-    this.filterProducts = this.products;
+    // this.products = this.products.filter(product => {
+    //   return product.id != id;
+    // })
+    // this.filterProducts = this.products;
   }
 
   verifyCode(code){
@@ -153,6 +208,10 @@ export class CartService {
       this.codePorcent = "00";
     }
   }
+  getDiscount(){
+    // this.totalDiscount = this.total - ((parseInt(this.codePorcent) * this.total) / 100);
+    return this.totalDiscount;
+  }
 
   addCode(code){
     if(this.codeDiscount.length > 0){
@@ -161,9 +220,10 @@ export class CartService {
     }else{
       console.log(code.value, code.value.length);
       if(code.value=="diproach" || code.value=="20off"){
-        this.totalDiscount = this.total - parseInt(this.codePorcent) * this.total / 100;
+        // this.getDiscount();
+        // this.totalDiscount = this.total - ((parseInt(this.codePorcent) * this.total) / 100);
         this.codeApply = this.codePorcent;
-        this.codePorcent = "00";
+        // this.codePorcent = "00";
         this.router.navigate(['/home']);
         this.presentToast(`Your code was applied! Total: $${this.totalDiscount}`,'success');
       }else{
@@ -171,4 +231,64 @@ export class CartService {
       }
     }
   }
+
+  sendProductAndCollect(total,productsSend){
+    this.total += total;
+    // Falta restar cantidad de productos enviados
+  }
+  
+  getProductsList(){
+    this.getProducts().subscribe(data =>{
+      console.log(data);
+      this.products = data;
+    }, error =>{
+      console.log(error);
+    })
+  }
+  
+  getProductsTypeList(type: String){
+    this.getProductsType(type).subscribe(data => {
+      this.filterProducts = data;
+    },error =>{
+      console.log(error.message);
+    })
+  }
+  
+  private _refresh$ = new Subject<void>();
+
+  get refresh(){
+    return this._refresh$;
+  }
+
+  createProduct(product){
+    return this.http.post('http://localhost:5000/api/product/create-product', product).pipe(
+      tap(()=>{
+        this._refresh$.next();
+      })
+    );
+  }
+  getProducts(){
+    return this.http.get<Product>('http://localhost:5000/api/product/');
+  }
+  getProductId(_id: String){
+    return this.http.get<Product>('http://localhost:5000/api/product/fetch-product/'+ _id);
+  }
+  getProductsType(type: String){
+    return this.http.get<Product>('http://localhost:5000/api/product/product-type/'+type).pipe(
+      tap(()=>{
+        this._refresh$.next();
+      })
+    );    
+  }
+  deletedProduct(_id: String){
+    return this.http.delete<Product>('http://localhost:5000/api/product/delete-product/'+ _id).pipe(
+      tap(()=>{
+        this._refresh$.next();
+      })
+    );
+  }
+  updateProduct(_id:String, product: Product){
+    return this.http.put<Product>('http://localhost:5000/api/product/update-product/'+ _id, product);
+  } 
 }
+

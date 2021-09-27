@@ -1,0 +1,22 @@
+[
+    {
+        "icon": "",
+        "name": "Products",
+        "redirectTo": "/home"
+    },
+    {
+        "icon": "",
+        "name": "Prodcuts List",
+        "redirectTo": "/products-list"
+    },
+    {
+        "icon": "",
+        "name": "Order",
+        "redirectTo": "/order"
+    },
+    {
+        "icon": "",
+        "name": "Order List",
+        "redirectTo": "/order-list"
+    }
+]

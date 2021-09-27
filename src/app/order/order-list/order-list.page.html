@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar color="medium">
+    <ion-buttons slot="start">
+      <ion-menu-button color="light" menu="menuOptions"></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-back-button defaultHref="/order"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Order List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let order of _order.orderProductList; let i=index">
+    <ion-header>
+      <ion-title class="ion-text-center">
+        Order Details #{{i}}
+      </ion-title>
+    </ion-header>
+    <ion-row>
+      <ion-col size="6" class="p-3">
+        {{order.client}}
+      </ion-col>
+      <ion-col size="6" class="p-3">
+        Total Order: ${{order.total}}
+      </ion-col>
+    </ion-row>
+    <ion-row *ngFor="let product of order.products ">
+      <ion-col size="6">
+        <div class="m-1">
+          {{product.description}} ${{product.price}}
+        </div>
+      </ion-col>
+      <ion-col>
+        <ion-row>
+          <ion-col size="4">
+            <div>{{product.quantity}}</div>
+          </ion-col>
+          <ion-col size="8">
+            <div>#{{product.code}}</div>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+</ion-content>

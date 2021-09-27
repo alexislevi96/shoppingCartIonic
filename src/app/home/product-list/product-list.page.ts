@@ -14,12 +14,12 @@ export class ProductListPage implements OnInit {
     this._cart.filterProducts = this._cart.products;
   }
 
-  async editQuantityProduct(id, description, price){
+  async editQuantityProduct(_id, description, price){
     const modal = await this.modal.create({
       component: EditPage,
       cssClass: 'my-custom-class',
       componentProps: {
-        'id': id,
+        '_id': _id,
         'description': description,
         'price': price
       }

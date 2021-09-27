@@ -8,9 +8,12 @@ import { CartService } from 'src/app/Services/cart.service';
   styleUrls: ['./resume.component.scss'],
 })
 export class ResumeComponent implements OnInit {
+  
+  subscription: any;
+  constructor(public _cart: CartService, private router: Router) {
+   }
 
-  constructor(public _cart: CartService, private router: Router) { }
-
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
 }

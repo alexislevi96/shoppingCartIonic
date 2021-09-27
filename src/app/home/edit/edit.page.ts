@@ -9,7 +9,7 @@ import { CartService } from 'src/app/Services/cart.service';
 })
 export class EditPage implements OnInit {
 
-  @Input() id: string;
+  @Input() _id: string;
   @Input() description: string;
   @Input() price: string;
 

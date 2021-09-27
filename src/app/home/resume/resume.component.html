@@ -2,20 +2,21 @@
   <ion-list *ngIf="_cart.products && _cart.products.length > 0; else noProducts">
     <ion-item *ngFor="let product of _cart.products | slice:0:3">
       <ion-avatar slot="start">
-        <ion-icon name={{product.type}}></ion-icon>
+        <ion-icon name={{product?.type}}></ion-icon>
       </ion-avatar>
       <ion-label>
         {{product.description}} ${{product.price}} Quantity: {{product.quantity}} <div slot="end">#{{product.code}}
+          Total Cost: ${{product.price * product.quantity}}
         </div>
       </ion-label>
-      <ion-button slot="end" color="danger" (click)="_cart.deletedProductCart(product.id)">
+      <ion-button slot="end" color="danger" (click)="_cart.deletedProductCart(product._id)">
         <ion-icon name="trash"></ion-icon>
       </ion-button>
     </ion-item>
   </ion-list>
   <ng-template #noProducts>
     <ion-text>
-      <p class="ion-text-center ion-margin-top">No adding products yet.</p>
+      <p class="ion-text-center ion-margin-top">No added products yet.</p>
     </ion-text>
   </ng-template>
   <div class="ion-text-center mt-4">
